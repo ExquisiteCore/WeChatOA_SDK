@@ -19,7 +19,11 @@ pub struct TextReply {
 }
 
 impl TextReply {
-    pub fn new(to_user: impl Into<String>, from_user: impl Into<String>, content: impl Into<String>) -> Self {
+    pub fn new(
+        to_user: impl Into<String>,
+        from_user: impl Into<String>,
+        content: impl Into<String>,
+    ) -> Self {
         Self {
             base: ReplyBase {
                 to_user_name: to_user.into(),
@@ -42,10 +46,7 @@ impl TextReply {
 <MsgType><![CDATA[text]]></MsgType>
 <Content><![CDATA[{}]]></Content>
 </xml>"#,
-            self.base.to_user_name,
-            self.base.from_user_name,
-            self.base.create_time,
-            self.content
+            self.base.to_user_name, self.base.from_user_name, self.base.create_time, self.content
         )
     }
 }
@@ -58,7 +59,11 @@ pub struct ImageReply {
 }
 
 impl ImageReply {
-    pub fn new(to_user: impl Into<String>, from_user: impl Into<String>, media_id: impl Into<String>) -> Self {
+    pub fn new(
+        to_user: impl Into<String>,
+        from_user: impl Into<String>,
+        media_id: impl Into<String>,
+    ) -> Self {
         Self {
             base: ReplyBase {
                 to_user_name: to_user.into(),
@@ -83,10 +88,7 @@ impl ImageReply {
 <MediaId><![CDATA[{}]]></MediaId>
 </Image>
 </xml>"#,
-            self.base.to_user_name,
-            self.base.from_user_name,
-            self.base.create_time,
-            self.media_id
+            self.base.to_user_name, self.base.from_user_name, self.base.create_time, self.media_id
         )
     }
 }
@@ -99,7 +101,11 @@ pub struct VoiceReply {
 }
 
 impl VoiceReply {
-    pub fn new(to_user: impl Into<String>, from_user: impl Into<String>, media_id: impl Into<String>) -> Self {
+    pub fn new(
+        to_user: impl Into<String>,
+        from_user: impl Into<String>,
+        media_id: impl Into<String>,
+    ) -> Self {
         Self {
             base: ReplyBase {
                 to_user_name: to_user.into(),
@@ -124,10 +130,7 @@ impl VoiceReply {
 <MediaId><![CDATA[{}]]></MediaId>
 </Voice>
 </xml>"#,
-            self.base.to_user_name,
-            self.base.from_user_name,
-            self.base.create_time,
-            self.media_id
+            self.base.to_user_name, self.base.from_user_name, self.base.create_time, self.media_id
         )
     }
 }
@@ -142,7 +145,11 @@ pub struct VideoReply {
 }
 
 impl VideoReply {
-    pub fn new(to_user: impl Into<String>, from_user: impl Into<String>, media_id: impl Into<String>) -> Self {
+    pub fn new(
+        to_user: impl Into<String>,
+        from_user: impl Into<String>,
+        media_id: impl Into<String>,
+    ) -> Self {
         Self {
             base: ReplyBase {
                 to_user_name: to_user.into(),
@@ -208,7 +215,11 @@ pub struct NewsReply {
 }
 
 impl NewsReply {
-    pub fn new(to_user: impl Into<String>, from_user: impl Into<String>, articles: Vec<NewsArticle>) -> Self {
+    pub fn new(
+        to_user: impl Into<String>,
+        from_user: impl Into<String>,
+        articles: Vec<NewsArticle>,
+    ) -> Self {
         Self {
             base: ReplyBase {
                 to_user_name: to_user.into(),

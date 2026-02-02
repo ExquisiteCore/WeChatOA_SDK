@@ -131,7 +131,9 @@ impl WeChatClient {
             "openid_list": openids,
             "tagid": tag_id
         });
-        let _: ApiResponse = self.post_json("/tags/members/batchuntagging", &body).await?;
+        let _: ApiResponse = self
+            .post_json("/tags/members/batchuntagging", &body)
+            .await?;
         Ok(())
     }
 

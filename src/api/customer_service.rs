@@ -108,7 +108,10 @@ struct SendResponse {
 
 impl WeChatClient {
     /// Send a customer service message.
-    pub async fn send_customer_service_message(&self, message: &CustomerServiceMessage) -> Result<()> {
+    pub async fn send_customer_service_message(
+        &self,
+        message: &CustomerServiceMessage,
+    ) -> Result<()> {
         let _: SendResponse = self.post_json("/message/custom/send", message).await?;
         Ok(())
     }

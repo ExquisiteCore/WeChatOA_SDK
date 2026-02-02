@@ -230,12 +230,13 @@ impl WeChatClient {
     /// Returns the URL of the uploaded image (can be used in article HTML).
     /// This is different from material upload - these images are specifically
     /// for embedding in article content.
-    pub async fn upload_article_image(&self, file_name: &str, file_data: Vec<u8>) -> Result<String> {
+    pub async fn upload_article_image(
+        &self,
+        file_name: &str,
+        file_data: Vec<u8>,
+    ) -> Result<String> {
         let token = self.access_token().await?;
-        let url = format!(
-            "{}/media/uploadimg?access_token={}",
-            WECHAT_API_BASE, token
-        );
+        let url = format!("{}/media/uploadimg?access_token={}", WECHAT_API_BASE, token);
 
         let part = Part::bytes(file_data).file_name(file_name.to_string());
         let form = Form::new().part("media", part);

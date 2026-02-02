@@ -1,9 +1,9 @@
-pub mod message;
 pub mod customer_service;
-pub mod template;
 pub mod material;
-pub mod user;
 pub mod menu;
-pub mod stats;
+pub mod message;
 pub mod publish;
 pub mod qrcode;
+pub mod stats;
+pub mod template;
+pub mod user;

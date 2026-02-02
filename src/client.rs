@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-use serde::de::DeserializeOwned;
 use serde::Deserialize;
+use serde::de::DeserializeOwned;
 
 use crate::access_token::TokenManager;
 use crate::config::Config;
@@ -40,7 +40,11 @@ impl WeChatClient {
     }
 
     /// Make a GET request to a WeChat API endpoint with automatic token injection.
-    pub(crate) async fn get<T: DeserializeOwned>(&self, path: &str, query: &[(&str, &str)]) -> Result<T> {
+    pub(crate) async fn get<T: DeserializeOwned>(
+        &self,
+        path: &str,
+        query: &[(&str, &str)],
+    ) -> Result<T> {
         let token = self.access_token().await?;
         let url = format!("{}{}", WECHAT_API_BASE, path);
 

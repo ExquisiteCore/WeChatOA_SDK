@@ -7,7 +7,7 @@
 use wechat_oa_sdk::Config;
 use wechat_oa_sdk::WeChatClient;
 use wechat_oa_sdk::api::message::IncomingMessage;
-use wechat_oa_sdk::models::reply::{TextReply, NewsReply, NewsArticle, empty_reply};
+use wechat_oa_sdk::models::reply::{NewsArticle, NewsReply, TextReply, empty_reply};
 
 fn main() {
     // Create client with token for signature verification
@@ -76,14 +76,12 @@ fn handle_message(msg: IncomingMessage) -> String {
         }
         IncomingMessage::Image(img) => {
             // Reply with news article
-            let articles = vec![
-                NewsArticle {
-                    title: "Thanks for the image!".to_string(),
-                    description: "We received your image.".to_string(),
-                    pic_url: img.pic_url.clone(),
-                    url: "https://example.com".to_string(),
-                }
-            ];
+            let articles = vec![NewsArticle {
+                title: "Thanks for the image!".to_string(),
+                description: "We received your image.".to_string(),
+                pic_url: img.pic_url.clone(),
+                url: "https://example.com".to_string(),
+            }];
             let reply = NewsReply::new(&img.from_user_name, &img.to_user_name, articles);
             reply.to_xml()
         }

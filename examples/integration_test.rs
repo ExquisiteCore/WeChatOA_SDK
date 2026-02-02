@@ -97,8 +97,10 @@ async fn main() {
     print!("[6/8] Get Material Count... ");
     match client.get_material_count().await {
         Ok(count) => {
-            println!("OK (image: {}, voice: {}, video: {}, news: {})",
-                count.image_count, count.voice_count, count.video_count, count.news_count);
+            println!(
+                "OK (image: {}, voice: {}, video: {}, news: {})",
+                count.image_count, count.voice_count, count.video_count, count.news_count
+            );
             passed += 1;
         }
         Err(e) => {

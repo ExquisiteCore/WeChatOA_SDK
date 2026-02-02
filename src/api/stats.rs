@@ -172,8 +172,9 @@ impl WeChatClient {
 
     /// Get upstream message hour statistics (single day only).
     pub async fn get_upstream_msg_hour(&self, range: &DateRange) -> Result<Vec<UpstreamMsgItem>> {
-        let resp: ListResponse<UpstreamMsgItem> =
-            self.post_json("/datacube/getupstreammsghour", range).await?;
+        let resp: ListResponse<UpstreamMsgItem> = self
+            .post_json("/datacube/getupstreammsghour", range)
+            .await?;
         Ok(resp.list)
     }
 
@@ -184,8 +185,9 @@ impl WeChatClient {
         &self,
         range: &DateRange,
     ) -> Result<Vec<InterfaceSummaryItem>> {
-        let resp: ListResponse<InterfaceSummaryItem> =
-            self.post_json("/datacube/getinterfacesummary", range).await?;
+        let resp: ListResponse<InterfaceSummaryItem> = self
+            .post_json("/datacube/getinterfacesummary", range)
+            .await?;
         Ok(resp.list)
     }
 

@@ -62,7 +62,9 @@ impl WeChatClient {
         let body = serde_json::json!({
             "template_id": template_id
         });
-        let _: DeleteResponse = self.post_json("/template/del_private_template", &body).await?;
+        let _: DeleteResponse = self
+            .post_json("/template/del_private_template", &body)
+            .await?;
         Ok(())
     }
 }

@@ -3,8 +3,8 @@ use quick_xml::de::from_str;
 use crate::client::WeChatClient;
 use crate::crypto::check_signature;
 use crate::error::Result;
-use crate::models::message::*;
 use crate::models::event::*;
+use crate::models::message::*;
 
 /// Incoming message/event from WeChat.
 #[derive(Debug, Clone)]
@@ -71,7 +71,9 @@ impl WeChatClient {
             "LOCATION" => IncomingMessage::LocationEvent(from_str(xml_body)?),
             "CLICK" => IncomingMessage::MenuClickEvent(from_str(xml_body)?),
             "VIEW" => IncomingMessage::MenuViewEvent(from_str(xml_body)?),
-            "TEMPLATESENDJOBFINISH" => IncomingMessage::TemplateSendJobFinishEvent(from_str(xml_body)?),
+            "TEMPLATESENDJOBFINISH" => {
+                IncomingMessage::TemplateSendJobFinishEvent(from_str(xml_body)?)
+            }
             _ => IncomingMessage::Unknown(xml_body.to_string()),
         };
 

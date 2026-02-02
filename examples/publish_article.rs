@@ -8,9 +8,9 @@
 
 use std::env;
 use std::fs;
-use wechat_oa_sdk::{Config, WeChatClient};
 use wechat_oa_sdk::models::material::MaterialType;
 use wechat_oa_sdk::models::publish::Article;
+use wechat_oa_sdk::{Config, WeChatClient};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
