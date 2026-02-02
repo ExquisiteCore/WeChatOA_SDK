@@ -12,7 +12,16 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new(app_id: impl Into<String>, app_secret: impl Into<String>, token: impl Into<String>) -> Self {
+    /// Create a new Config.
+    ///
+    /// - `app_id`: AppID from WeChat Official Account settings
+    /// - `app_secret`: AppSecret from WeChat Official Account settings
+    /// - `token`: Token for server callback signature verification (set in 服务器配置)
+    pub fn new(
+        app_id: impl Into<String>,
+        app_secret: impl Into<String>,
+        token: impl Into<String>,
+    ) -> Self {
         Self {
             app_id: app_id.into(),
             app_secret: app_secret.into(),

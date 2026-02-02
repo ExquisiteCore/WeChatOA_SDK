@@ -4,13 +4,14 @@
 //! In a real application, you would integrate this with a web framework
 //! like axum, actix-web, or rocket.
 
-use wechat_oa_sdk::{Config, WeChatClient};
+use wechat_oa_sdk::Config;
+use wechat_oa_sdk::WeChatClient;
 use wechat_oa_sdk::api::message::IncomingMessage;
 use wechat_oa_sdk::models::reply::{TextReply, NewsReply, NewsArticle, empty_reply};
 
 fn main() {
-    // Create client
-    let config = Config::new("your_app_id", "your_app_secret", "your_token");
+    // Create client with token for signature verification
+    let config = Config::new("your_app_id", "your_app_secret", "your_callback_token");
     let client = WeChatClient::new(config);
 
     // Example: Verify signature (called on GET request from WeChat)

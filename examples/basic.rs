@@ -15,7 +15,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Load configuration from environment variables
     let app_id = env::var("WECHAT_APP_ID").expect("WECHAT_APP_ID not set");
     let app_secret = env::var("WECHAT_APP_SECRET").expect("WECHAT_APP_SECRET not set");
-    let token = env::var("WECHAT_TOKEN").expect("WECHAT_TOKEN not set");
+    let token = env::var("WECHAT_TOKEN").unwrap_or_else(|_| "your_token".to_string());
 
     // Create client
     let config = Config::new(app_id, app_secret, token);

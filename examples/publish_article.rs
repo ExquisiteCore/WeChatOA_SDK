@@ -16,7 +16,7 @@ use wechat_oa_sdk::models::publish::Article;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let app_id = env::var("WECHAT_APP_ID")?;
     let app_secret = env::var("WECHAT_APP_SECRET")?;
-    let token = env::var("WECHAT_TOKEN")?;
+    let token = env::var("WECHAT_TOKEN").unwrap_or_else(|_| "your_token".to_string());
 
     let config = Config::new(app_id, app_secret, token);
     let client = WeChatClient::new(config);

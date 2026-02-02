@@ -6,7 +6,16 @@
       "Bash(cargo build)",
       "Bash(cargo test)",
       "WebFetch(domain:blog.csdn.net)",
-      "Bash(cargo build --examples)"
+      "Bash(cargo build --examples)",
+      "Bash(cargo build --example integration_test)",
+      "Bash($env:WECHAT_APP_ID=\"wxfd9f95ebdc9c6c49\")",
+      "Bash($env:WECHAT_APP_SECRET=\"1584d691ff57c52aa3576d4a54530bdf\")",
+      "Bash(cargo run --example integration_test)",
+      "Bash(cmd /c \"set WECHAT_APP_ID=wxfd9f95ebdc9c6c49 && set WECHAT_APP_SECRET=1584d691ff57c52aa3576d4a54530bdf && cargo run --example integration_test\")",
+      "Bash(set WECHAT_APP_ID=wxfd9f95ebdc9c6c49)",
+      "Bash(set WECHAT_APP_SECRET=1584d691ff57c52aa3576d4a54530bdf)",
+      "Bash(targetdebugexamplesintegration_test.exe)",
+      "Bash(WECHAT_APP_ID=wxfd9f95ebdc9c6c49 WECHAT_APP_SECRET=1584d691ff57c52aa3576d4a54530bdf ./target/debug/examples/integration_test.exe)"
     ]
   }
 }
