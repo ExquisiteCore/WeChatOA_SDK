@@ -1,14 +1,12 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+pub mod config;
+pub mod error;
+pub mod client;
+pub mod crypto;
+pub mod models;
+pub mod api;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+mod access_token;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub use client::WeChatClient;
+pub use config::Config;
+pub use error::{WeChatError, Result};

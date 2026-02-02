@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:developers.weixin.qq.com)",
+      "Bash(cargo build)",
+      "Bash(cargo test)",
+      "WebFetch(domain:blog.csdn.net)",
+      "Bash(cargo build --examples)"
     ]
   }
 }
