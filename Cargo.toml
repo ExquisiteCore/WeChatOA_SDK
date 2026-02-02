@@ -1,6 +1,6 @@
 [package]
 name = "wechat-oa-sdk"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 description = "WeChat Official Account API SDK for Rust"
 authors = ["ExquisiteCore <xiaolongqq1y@163.com>"]
