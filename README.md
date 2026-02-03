@@ -24,7 +24,7 @@
 
 ```toml
 [dependencies]
-wechat-oa-sdk = "1.0"
+wechat-oa-sdk = "1"
 tokio = { version = "1", features = ["full"] }
 ```
 

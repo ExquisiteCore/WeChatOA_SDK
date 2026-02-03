@@ -1527,7 +1527,7 @@ dependencies = [
 
 [[package]]
 name = "wechat-oa-sdk"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "aes",
  "base64",
