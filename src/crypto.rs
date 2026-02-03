@@ -1,5 +1,8 @@
 use aes::cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
-use base64::{Engine, alphabet, engine::{GeneralPurpose, GeneralPurposeConfig, general_purpose::STANDARD as BASE64}};
+use base64::{
+    Engine, alphabet,
+    engine::{GeneralPurpose, GeneralPurposeConfig, general_purpose::STANDARD as BASE64},
+};
 use rand::Rng;
 use sha1::{Digest, Sha1};
 
