@@ -1,5 +1,5 @@
 use aes::cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
-use base64::{engine::general_purpose::STANDARD as BASE64, Engine};
+use base64::{Engine, engine::general_purpose::STANDARD as BASE64};
 use rand::Rng;
 use sha1::{Digest, Sha1};
 
@@ -38,7 +38,12 @@ fn compute_signature(token: &str, timestamp: &str, nonce: &str) -> String {
 ///
 /// Used to verify incoming encrypted messages and sign outgoing encrypted messages.
 /// Algorithm: SHA1(sort([token, timestamp, nonce, encrypt_msg]))
-pub fn compute_msg_signature(token: &str, timestamp: &str, nonce: &str, encrypt_msg: &str) -> String {
+pub fn compute_msg_signature(
+    token: &str,
+    timestamp: &str,
+    nonce: &str,
+    encrypt_msg: &str,
+) -> String {
     let mut parts = [token, timestamp, nonce, encrypt_msg];
     parts.sort();
     let input = parts.join("");
@@ -307,8 +312,20 @@ mod tests {
         let encrypt_msg = "encrypted_content";
 
         let sig = compute_msg_signature(token, timestamp, nonce, encrypt_msg);
-        assert!(check_msg_signature(token, &sig, timestamp, nonce, encrypt_msg));
-        assert!(!check_msg_signature(token, "wrong", timestamp, nonce, encrypt_msg));
+        assert!(check_msg_signature(
+            token,
+            &sig,
+            timestamp,
+            nonce,
+            encrypt_msg
+        ));
+        assert!(!check_msg_signature(
+            token,
+            "wrong",
+            timestamp,
+            nonce,
+            encrypt_msg
+        ));
     }
 
     #[test]

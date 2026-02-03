@@ -108,7 +108,13 @@ impl WeChatClient {
         nonce: &str,
         encrypt_msg: &str,
     ) -> bool {
-        check_msg_signature(&self.config.token, msg_signature, timestamp, nonce, encrypt_msg)
+        check_msg_signature(
+            &self.config.token,
+            msg_signature,
+            timestamp,
+            nonce,
+            encrypt_msg,
+        )
     }
 
     /// Parse an encrypted incoming message or event from WeChat.
@@ -201,7 +207,9 @@ impl WeChatClient {
         let signature = compute_msg_signature(&self.config.token, timestamp, nonce, &encrypted);
 
         // Generate the final encrypted XML
-        Ok(generate_encrypted_xml(&encrypted, &signature, timestamp, nonce))
+        Ok(generate_encrypted_xml(
+            &encrypted, &signature, timestamp, nonce,
+        ))
     }
 
     /// Encrypt a reply XML with auto-generated timestamp and nonce.
