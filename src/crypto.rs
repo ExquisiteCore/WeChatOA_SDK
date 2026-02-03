@@ -1,5 +1,5 @@
 use aes::cipher::{BlockDecryptMut, BlockEncryptMut, KeyIvInit};
-use base64::{Engine, engine::general_purpose::STANDARD as BASE64};
+use base64::{Engine, alphabet, engine::{GeneralPurpose, GeneralPurposeConfig, general_purpose::STANDARD as BASE64}};
 use rand::Rng;
 use sha1::{Digest, Sha1};
 
@@ -9,6 +9,15 @@ type Aes256CbcEnc = cbc::Encryptor<aes::Aes256>;
 type Aes256CbcDec = cbc::Decryptor<aes::Aes256>;
 
 const AES_BLOCK_SIZE: usize = 16;
+
+/// 宽松 Base64 解码器（允许尾部 bits 不为 0）
+///
+/// 微信生成的 EncodingAESKey 可能在 Base64 尾部填充位不为 0，
+/// 标准解码器会拒绝，这里使用宽松模式兼容。
+const LENIENT_BASE64: GeneralPurpose = GeneralPurpose::new(
+    &alphabet::STANDARD,
+    GeneralPurposeConfig::new().with_decode_allow_trailing_bits(true),
+);
 
 /// Verify the WeChat server callback signature.
 ///
@@ -70,13 +79,17 @@ pub fn check_msg_signature(
 ///
 /// EncodingAESKey is a 43-character Base64-encoded string.
 /// We need to append "=" to make it valid Base64, then decode to get 32 bytes.
+///
+/// Note: WeChat's EncodingAESKey may have non-zero trailing bits, so we use
+/// a lenient decoder that allows this.
 pub fn decode_aes_key(encoding_aes_key: &str) -> Result<[u8; 32]> {
     if encoding_aes_key.len() != 43 {
         return Err(WeChatError::InvalidAesKey);
     }
 
     let padded = format!("{}=", encoding_aes_key);
-    let decoded = BASE64
+    // 使用宽松解码器，兼容微信可能生成的非标准 Base64
+    let decoded = LENIENT_BASE64
         .decode(padded)
         .map_err(|_| WeChatError::InvalidAesKey)?;
 
