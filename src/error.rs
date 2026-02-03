@@ -21,4 +21,22 @@ pub enum WeChatError {
 
     #[error("Access token not available")]
     TokenUnavailable,
+
+    #[error("Invalid AES key")]
+    InvalidAesKey,
+
+    #[error("Decryption failed: {0}")]
+    DecryptionFailed(String),
+
+    #[error("Encryption failed: {0}")]
+    EncryptionFailed(String),
+
+    #[error("Invalid message format")]
+    InvalidMessageFormat,
+
+    #[error("AppID mismatch")]
+    AppIdMismatch,
+
+    #[error("Encoding AES key not configured")]
+    AesKeyNotConfigured,
 }

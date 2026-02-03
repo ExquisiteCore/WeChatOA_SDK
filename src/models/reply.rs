@@ -1,5 +1,8 @@
 use serde::Serialize;
 
+use crate::client::WeChatClient;
+use crate::error::Result;
+
 /// Base fields for all reply messages.
 #[derive(Debug, Clone)]
 pub struct ReplyBase {
@@ -49,6 +52,23 @@ impl TextReply {
             self.base.to_user_name, self.base.from_user_name, self.base.create_time, self.content
         )
     }
+
+    /// Generate an encrypted XML reply for safe mode.
+    ///
+    /// Uses auto-generated timestamp and nonce.
+    pub fn to_encrypted_xml(&self, client: &WeChatClient) -> Result<String> {
+        client.encrypt_reply_auto(&self.to_xml())
+    }
+
+    /// Generate an encrypted XML reply with custom timestamp and nonce.
+    pub fn to_encrypted_xml_with(
+        &self,
+        client: &WeChatClient,
+        timestamp: &str,
+        nonce: &str,
+    ) -> Result<String> {
+        client.encrypt_reply(&self.to_xml(), timestamp, nonce)
+    }
 }
 
 /// Image reply message.
@@ -91,6 +111,21 @@ impl ImageReply {
             self.base.to_user_name, self.base.from_user_name, self.base.create_time, self.media_id
         )
     }
+
+    /// Generate an encrypted XML reply for safe mode.
+    pub fn to_encrypted_xml(&self, client: &WeChatClient) -> Result<String> {
+        client.encrypt_reply_auto(&self.to_xml())
+    }
+
+    /// Generate an encrypted XML reply with custom timestamp and nonce.
+    pub fn to_encrypted_xml_with(
+        &self,
+        client: &WeChatClient,
+        timestamp: &str,
+        nonce: &str,
+    ) -> Result<String> {
+        client.encrypt_reply(&self.to_xml(), timestamp, nonce)
+    }
 }
 
 /// Voice reply message.
@@ -132,6 +167,21 @@ impl VoiceReply {
 </xml>"#,
             self.base.to_user_name, self.base.from_user_name, self.base.create_time, self.media_id
         )
+    }
+
+    /// Generate an encrypted XML reply for safe mode.
+    pub fn to_encrypted_xml(&self, client: &WeChatClient) -> Result<String> {
+        client.encrypt_reply_auto(&self.to_xml())
+    }
+
+    /// Generate an encrypted XML reply with custom timestamp and nonce.
+    pub fn to_encrypted_xml_with(
+        &self,
+        client: &WeChatClient,
+        timestamp: &str,
+        nonce: &str,
+    ) -> Result<String> {
+        client.encrypt_reply(&self.to_xml(), timestamp, nonce)
     }
 }
 
@@ -195,6 +245,21 @@ impl VideoReply {
             self.title.as_deref().unwrap_or(""),
             self.description.as_deref().unwrap_or("")
         )
+    }
+
+    /// Generate an encrypted XML reply for safe mode.
+    pub fn to_encrypted_xml(&self, client: &WeChatClient) -> Result<String> {
+        client.encrypt_reply_auto(&self.to_xml())
+    }
+
+    /// Generate an encrypted XML reply with custom timestamp and nonce.
+    pub fn to_encrypted_xml_with(
+        &self,
+        client: &WeChatClient,
+        timestamp: &str,
+        nonce: &str,
+    ) -> Result<String> {
+        client.encrypt_reply(&self.to_xml(), timestamp, nonce)
     }
 }
 
@@ -267,6 +332,21 @@ impl NewsReply {
             self.articles.len(),
             articles_xml
         )
+    }
+
+    /// Generate an encrypted XML reply for safe mode.
+    pub fn to_encrypted_xml(&self, client: &WeChatClient) -> Result<String> {
+        client.encrypt_reply_auto(&self.to_xml())
+    }
+
+    /// Generate an encrypted XML reply with custom timestamp and nonce.
+    pub fn to_encrypted_xml_with(
+        &self,
+        client: &WeChatClient,
+        timestamp: &str,
+        nonce: &str,
+    ) -> Result<String> {
+        client.encrypt_reply(&self.to_xml(), timestamp, nonce)
     }
 }
 

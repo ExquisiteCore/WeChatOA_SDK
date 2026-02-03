@@ -16,6 +16,7 @@
 - **文章发布** - 发布文章、群发消息
 - **二维码** - 生成带参数二维码
 - **签名验证** - 服务器回调签名校验
+- **消息加解密** - 支持安全模式/兼容模式，AES-256-CBC 加解密
 
 ## 安装
 
@@ -28,6 +29,8 @@ tokio = { version = "1", features = ["full"] }
 ```
 
 ## 快速开始
+
+### 明文模式
 
 ```rust
 use wechat_oa_sdk::{Config, WeChatClient};
@@ -52,6 +55,16 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
+```
+
+### 安全模式（消息加解密）
+
+```rust
+use wechat_oa_sdk::{Config, WeChatClient};
+
+let config = Config::new("your_app_id", "your_app_secret", "your_token")
+    .with_encoding_aes_key("your_43_char_encoding_aes_key");
+let client = WeChatClient::new(config);
 ```
 
 ## 使用示例
@@ -171,6 +184,8 @@ std::fs::write("qrcode.jpg", image_data)?;
 
 ### 处理消息回调
 
+#### 明文模式
+
 ```rust
 use wechat_oa_sdk::api::message::IncomingMessage;
 use wechat_oa_sdk::models::reply::TextReply;
@@ -206,22 +221,69 @@ match msg {
 }
 ```
 
+#### 安全模式（加密）
+
+```rust
+use wechat_oa_sdk::api::message::IncomingMessage;
+use wechat_oa_sdk::models::reply::TextReply;
+
+// 服务器验证（GET 请求，安全模式下需要解密 echostr）
+if client.verify_msg_signature(&msg_signature, &timestamp, &nonce, &echostr) {
+    let decrypted = client.decrypt_echostr(&echostr)?;
+    return Ok(decrypted);
+}
+
+// 解密并解析消息（POST 请求）
+let msg = client.parse_encrypted_message(&xml_body, &msg_signature, &timestamp, &nonce)?;
+
+match msg {
+    IncomingMessage::Text(text) => {
+        let reply = TextReply::new(
+            &text.from_user_name,
+            &text.to_user_name,
+            "收到你的消息了！",
+        );
+        // 加密回复
+        return Ok(reply.to_encrypted_xml(&client)?);
+    }
+    _ => {
+        return Ok("success".to_string());
+    }
+}
+```
+
 ## API 列表
 
 ### 基础
 | 方法 | 说明 |
 |------|------|
 | `access_token()` | 获取 Access Token |
-| `verify_signature()` | 验证消息签名 |
+| `verify_signature()` | 验证消息签名（明文模式） |
 | `get_callback_ip_list()` | 获取微信服务器 IP |
 
 ### 消息
 | 方法 | 说明 |
 |------|------|
-| `parse_message()` | 解析接收的消息 |
+| `parse_message()` | 解析接收的消息（明文模式） |
 | `send_text()` | 发送文本客服消息 |
 | `send_image()` | 发送图片客服消息 |
 | `send_template_message()` | 发送模板消息 |
+
+### 消息加解密
+| 方法 | 说明 |
+|------|------|
+| `verify_msg_signature()` | 验证加密消息签名 |
+| `parse_encrypted_message()` | 解密并解析消息（安全/兼容模式） |
+| `decrypt_echostr()` | 解密服务器验证的 echostr |
+| `encrypt_reply()` | 加密回复消息（自定义 timestamp/nonce） |
+| `encrypt_reply_auto()` | 加密回复消息（自动生成 timestamp/nonce） |
+
+所有 Reply 类型（TextReply、ImageReply、VoiceReply、VideoReply、NewsReply）均支持：
+| 方法 | 说明 |
+|------|------|
+| `to_xml()` | 生成明文 XML 回复 |
+| `to_encrypted_xml(client)` | 生成加密 XML 回复 |
+| `to_encrypted_xml_with(client, timestamp, nonce)` | 自定义参数的加密回复 |
 
 ### 素材
 | 方法 | 说明 |
@@ -276,6 +338,7 @@ WECHAT_APP_ID=xxx WECHAT_APP_SECRET=xxx WECHAT_TOKEN=xxx cargo run --example int
 1. **IP 白名单**：调用 API 前需在公众号后台配置服务器 IP 白名单
 2. **账号权限**：部分接口需要认证订阅号或服务号才能使用
 3. **AppSecret 安全**：请勿泄露 AppSecret，建议使用环境变量管理
+4. **消息模式**：安全模式需要在公众号后台配置 EncodingAESKey，并在 Config 中通过 `with_encoding_aes_key()` 设置
 
 ## License
 
